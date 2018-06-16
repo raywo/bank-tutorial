@@ -2,6 +2,8 @@ package de.raywo.tutorials.bank;
 
 import de.raywo.tutorials.bank.ui.BankUI;
 
+import java.util.Locale;
+
 
 /**
  * Die „Start“-Klasse unseres Banksystems.
@@ -21,6 +23,8 @@ public class BankSystem {
    * @param args Liste von Parametern
    */
   public static void main(String[] args) {
+    Locale.setDefault(Locale.GERMANY);
+
     BankUI bankUI = new BankUI();
     bankUI.showMainMenu();
 

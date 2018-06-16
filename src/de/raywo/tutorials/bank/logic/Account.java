@@ -1,5 +1,7 @@
 package de.raywo.tutorials.bank.logic;
 
+import java.text.NumberFormat;
+
 /**
  * Stellt ein Konto unserer Bank dar.
  *
@@ -12,12 +14,6 @@ package de.raywo.tutorials.bank.logic;
  *
  * Der Saldo des Kontos wird als `long` gespeichert, um
  * Rundungsfehler zu vermeiden. Das heißt, der Saldo wird in Cent gespeichert.
- *
- * ### Anmerkung zum Seminar:
- * * Fortgeschrittene User können hier auch `BigDecimal` als Datentyp verwenden.
- * * Dadurch, dass der Saldo und auch alle anderen Beträge als `long`
- * angegeben werden, ist die Ausgabe nicht sehr elegant. Das gleiche gilt
- * auch für `BigDecimal`. Im nächsten Schritt sollte das verbessert werden.
  *
  * @author Ray Wojciechowski
  */
@@ -101,11 +97,26 @@ public class Account implements Comparable<Account> {
   }
 
 
+  /**
+   * Gibt den Saldo als formatierten String zurück.
+   *
+   * Das Format des zurückgegebenen Strings wird durch die Locale des Systems
+   * festgelegt.
+   *
+   * @return den Saldo dieses Kontos als formatierten String.
+   */
+  public String getFormattedBalance() {
+    NumberFormat nf = NumberFormat.getCurrencyInstance();
+
+    return nf.format(this.getBalance() / 100);
+  }
+
+
   @Override
   public String toString() {
     return "IBAN: " + this.getIban()
         + " - Inhaber: " + this.getOwner()
-        + " - Kontostand: " + this.getBalance();
+        + " - Kontostand: " + this.getFormattedBalance();
   }
 
 
