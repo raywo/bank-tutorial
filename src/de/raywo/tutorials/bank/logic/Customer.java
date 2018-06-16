@@ -11,7 +11,7 @@ package de.raywo.tutorials.bank.logic;
  *
  * @author Ray Wojciechowski
  */
-public class Customer {
+public class Customer implements Comparable<Customer> {
   private String firstname;
   private String lastname;
 
@@ -25,28 +25,6 @@ public class Customer {
   public Customer(final String firstname, final String lastname) {
     this.setFirstname(firstname);
     this.setLastname(lastname);
-  }
-
-
-  /**
-   * Gibt an, ob ein anderes Objekt gleich zu diesem ist.
-   *
-   * Zwei Kunden sind genau dann gleich, wenn ihr zusammengesetzter Name
-   * identisch ist.
-   *
-   * @param other das zu vergleichende Objekt
-   * @return true, gdw. das andere Objekt auch ein Kunde ist und der
-   * zusammengesetzte Name identisch ist; false sonst
-   */
-  @Override
-  public boolean equals(Object other) {
-    if (other instanceof Customer) {
-      Customer otherCustomer = (Customer) other;
-
-      return this.getFullname().equals(otherCustomer.getFullname());
-    }
-
-    return false;
   }
 
 
@@ -107,5 +85,47 @@ public class Customer {
   @Override
   public String toString() {
     return this.getFullname();
+  }
+
+
+  /**
+   * Gibt an, ob ein anderes Objekt gleich zu diesem ist.
+   *
+   * Zwei Kunden sind genau dann gleich, wenn sie beim Vergleich mittels
+   * `compareTo` als gleich identifiziert werden.
+   *
+   * @param other das zu vergleichende Objekt
+   * @return true, gdw. das andere Objekt auch ein Kunde ist und der
+   * zusammengesetzte Name identisch ist; false sonst
+   *
+   * @see Customer#compareTo(Customer)
+   */
+  @Override
+  public boolean equals(Object other) {
+    if (other instanceof Customer) {
+      Customer otherCustomer = (Customer) other;
+
+      return this.getFullname().compareTo(otherCustomer.getFullname()) == 0;
+    }
+
+    return false;
+  }
+
+
+  /**
+   * Vergleicht diesen Kunden mit einem anderen Kunden und stellt eine
+   * Ordnung her.
+   *
+   * Die Ordnung über die Kunden wird durch die Ordnung über deren vollen
+   * Namen hergestellt.
+   *
+   * @param otherCustomer der andere Kunde mit dem verglichen werden soll
+   * @return eine negative Zahl, Null oder eine positive Zahl, gdw. der volle
+   * Name dieses Kunden kleiner, gleich oder größer ist, als der des
+   * übergebenen Kunden ist
+   */
+  @Override
+  public int compareTo(Customer otherCustomer) {
+    return this.getFullname().compareTo(otherCustomer.getFullname());
   }
 }

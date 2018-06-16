@@ -21,7 +21,7 @@ package de.raywo.tutorials.bank.logic;
  *
  * @author Ray Wojciechowski
  */
-public class Account {
+public class Account implements Comparable<Account> {
   private final String iban;
   private final Customer owner;
   private long balance;
@@ -70,44 +70,6 @@ public class Account {
 
 
   /**
-   * Gibt an, ob ein anderes Objekt gleich zu diesem ist.
-   *
-   * Zwei Konten sind genau dann gleich, wenn deren IBAN identisch ist.
-   *
-   * **Anmerkung zum Seminar:**
-   *
-   * Im ersten Schritt wird geprüft, ob das `other` Objekt überhaupt ein
-   * Konto ist. Ist das nicht der Fall, sind die Objekte nicht gleich und es
-   * wird `false` zurückgegeben.
-   *
-   * Ist `other` auch ein Konto wird geprüft, ob die IBANs gleich sind. Dazu
-   * wird die `equals`-Methode von `String` verwendet.
-   *
-   * @param other das andere Objekt, mit dem verglichen werden soll
-   * @return true, gdw. das andere Objekt ein Konto ist und die selbe IBAN
-   * hat wie dieses; `false` sonst
-   */
-  @Override
-  public boolean equals(Object other) {
-    if (other instanceof Account) {
-      Account otherAccount = (Account) other;
-
-      return this.iban.equals(otherAccount.iban);
-    } else {
-      return false;
-    }
-  }
-
-
-  @Override
-  public String toString() {
-    return "IBAN: " + this.getIban()
-        + " - Inhaber: " + this.getOwner()
-        + " - Kontostand: " + this.getBalance();
-  }
-
-
-  /**
    * Gibt die IBAN des Kontos zurück.
    *
    * @return die IBAN dieses Kontos
@@ -136,5 +98,50 @@ public class Account {
    */
   public long getBalance() {
     return balance;
+  }
+
+
+  @Override
+  public String toString() {
+    return "IBAN: " + this.getIban()
+        + " - Inhaber: " + this.getOwner()
+        + " - Kontostand: " + this.getBalance();
+  }
+
+
+  /**
+   * Gibt an, ob ein anderes Objekt gleich zu diesem ist.
+   *
+   * Zwei Konten sind genau dann gleich, wenn sie beim Vergleich mittels
+   * `compareTo` als gleich identifiziert werden.
+   *
+   * @param other das andere Objekt, mit dem verglichen werden soll
+   * @return true, gdw. das andere Objekt ein Konto ist und die selbe IBAN
+   * hat wie dieses; `false` sonst
+   */
+  @Override
+  public boolean equals(Object other) {
+    if (other instanceof Account) {
+      Account otherAccount = (Account) other;
+
+      return this.iban.compareTo(otherAccount.iban) == 0;
+    }
+
+    return false;
+  }
+
+
+  /**
+   * Vergleicht dieses Konto mit einem anderen Konto.
+   *
+   * Die Ordnung über Konten wird über deren IBAN festgelegt.
+   *
+   * @param other das Konto, mit dem verglichen werden soll
+   * @return eine negative Zahl, Null oder eine positive Zahl, gdw. die IBAN
+   * dieses Kontos kleiner, gleich oder größer als die des anderen ist
+   */
+  @Override
+  public int compareTo(Account other) {
+    return this.iban.compareTo(other.getIban());
   }
 }

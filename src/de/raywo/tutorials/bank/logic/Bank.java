@@ -1,27 +1,32 @@
 package de.raywo.tutorials.bank.logic;
 
 
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * Stellt die Bank in unserem Banksystem dar.
  *
- * Eine Bank verfügt über eine Liste von Kunden und Konten.
+ * Eine Bank hat eine BIC und einen Namen. Außerdem verfügt sie über eine Liste
+ * von Kunden und Konten.
  *
- * ### Anmerkung zum Seminar:
- *
- * Die Implementierung dieser Bank ist noch sehr rudimentär. Da für die
- * Kunden- und Kontenliste ein Array verwendet wird, ist von vornherein
- * festgelegt wie viele Kunden und Konten diese Bank verwalten kann. Das
- * Hinzufügen und Löschen von Kunden bzw. Konten ist auch recht aufwändig und
- * enthält unnötige Code-Doppelungen.
- *
- * In einem nächsten Schritt sollte das geändert werden.
+ * Die Kunden und Konten werden mit Hilfe von Mengen (`Set`) verwaltet. So
+ * kann sehr einfach verhindert werden, dass Kunden bzw. Konten doppelt
+ * gespeichert werden. Außerdem vereinfacht es das Hinzufügen und Löschen,
+ * weil dafür die Funktionalität der Set-Implementierung verwendet werden
+ * kann. Allerdings ist es dafür notwendig, dass sowohl Konten als auch
+ * Kunden vergleichbar sind. Sie müssen also das `Comparable`-Interface
+ * implementieren.
  *
  * @author Ray Wojciechowski
+ *
+ * @see Set
+ * @see TreeSet
  */
 public class Bank {
   private final String bic;
-  private final Account[] accounts;
-  private final Customer[] customers;
+  private final Set<Account> accounts;
+  private final Set<Customer> customers;
   private String name;
 
 
@@ -34,8 +39,8 @@ public class Bank {
   public Bank(String bic, String name) {
     this.bic = bic;
     this.setName(name);
-    this.accounts = new Account[10];
-    this.customers = new Customer[10];
+    this.accounts = new TreeSet<>();
+    this.customers = new TreeSet<>();
   }
 
 
@@ -70,116 +75,66 @@ public class Bank {
 
 
   /**
-   * Liefert die Liste der gespeicherten Konten.
+   * Liefert eine flache Kopie der Liste der gespeicherten Konten.
    *
-   * @return die Liste der gespeicherten Konten in Form eines Array.
+   * @return eine flache Kopie der Liste der gespeicherten Konten
    */
-  public Account[] getAccounts() {
-    return accounts;
+  public Set<Account> getAccounts() {
+    TreeSet<Account> treeSet = (TreeSet<Account>) this.accounts;
+
+    return (Set<Account>) treeSet.clone();
   }
 
 
   /**
-   * Liefert die Liste der gespeicherten Kunden.
+   * Liefert eine flache Kopie der Liste der gespeicherten Kunden.
    *
-   * @return die Liste der gespeicherten Kunden in Form eines Array.
+   * @return eine flache Kopie der Liste der gespeicherten Kunden
    */
-  public Customer[] getCustomers() {
-    return customers;
+  public Set<Customer> getCustomers() {
+    TreeSet<Customer> treeSet = (TreeSet<Customer>) this.customers;
+
+    return (Set<Customer>) treeSet.clone();
   }
 
 
   /**
    * Fügt der Bank einen neuen Kunden hinzu.
    *
-   * **Anmerkung zum Seminar:**
-   *
-   * Die aktuelle Implementierung kann maximal 10 Kunden speichern. Wird
-   * versucht einen weiteren Kunden hinzuzufügen, wird keine leere Stelle mehr
-   * gefunden und das Hinzufügen wird kommentarlos unterlassen.
-   *
    * @param newCustomer der hinzuzufügende Kunde
    */
   public void addCustomer(Customer newCustomer) {
-    for (int i = 0; i < this.customers.length; i++) {
-      if (this.customers[i] == null) {
-        this.customers[i] = newCustomer;
-        return;
-      }
-    }
+    this.customers.add(newCustomer);
   }
 
 
   /**
    * Entfernt den angegebenen Kunden aus der Bank.
    *
-   * **Anmerkung zum Seminar:**
-   *
-   * Um den zu entfernenden Kunden zu finden, wird zunächst das Kunden-Array
-   * durchlaufen und verglichen, ob das aktuelle Element dem angegebenen
-   * Kunden entspricht. Ist das der Fall wird der Kunde entfernt, indem die
-   * Referenz im Array auf `null` gesetzt wird. Dadurch entstehen Lücken in
-   * der Liste, die in der Ausgabe unvorteilhaft aussehen können und auch
-   * sonst ein Reihe von Problemen bereiten können.
-   *
-   * Für den Vergleich zweier Kunden wird die `equals`-Methode aus der
-   * `Customer`-Klasse verwendet.
-   *
    * @param customer der zu entfernende Kunde
    */
   public void removeCustomer(Customer customer) {
-    for (int i = 0; i < this.customers.length; i++) {
-      if (this.customers[i].equals(customer)) {
-        this.customers[i] = null;
-      }
-    }
+    this.customers.remove(customer);
   }
 
 
   /**
    * Fügt der Bank ein neues Konto hinzu.
    *
-   * **Anmerkung zum Seminar:**
-   *
-   * Die aktuelle Implementierung kann maximal 10 Konten speichern. Wird
-   * versucht ein weitere Konto hinzuzufügen, wird keine leere Stelle mehr
-   * gefunden und das Hinzufügen wird kommentarlos unterlassen.
-   *
    * @param newAccount das hinzuzufügende Konto
    */
   public void addAccount(Account newAccount) {
-    for (int i = 0; i < this.accounts.length; i++) {
-      if (this.accounts[i] == null) {
-        this.accounts[i] = newAccount;
-        return;
-      }
-    }
+    this.accounts.add(newAccount);
   }
 
 
   /**
    * Entfernt das angegebene Konto aus der Bank.
    *
-   * **Anmerkung zum Seminar:**
-   *
-   * Um das zu entfernende Konto zu finden, wird zunächst das Konten-Array
-   * durchlaufen und verglichen, ob das aktuelle Element dem angegebenen
-   * Konto entspricht. Ist das der Fall wird das Konto entfernt, indem die
-   * Referenz im Array auf `null` gesetzt wird. Dadurch entstehen Lücken in
-   * der Liste, die in der Ausgabe unvorteilhaft aussehen können und auch
-   * sonst ein Reihe von Problemen bereiten können.
-   *
-   * Für den Vergleich zweier Konten wird die `equals`-Methode aus der
-   * `Account`-Klasse verwendet.
-   *
    * @param account das zu entfernende Konto
    */
   public void removeAccount(Account account) {
-    for (int i = 0; i < this.accounts.length; i++) {
-      if (this.accounts[i].equals(account)) {
-        this.accounts[i] = null;
-      }
-    }
+    this.accounts.remove(account);
   }
 
 
