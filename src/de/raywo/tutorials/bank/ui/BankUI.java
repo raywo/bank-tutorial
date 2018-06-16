@@ -1,8 +1,6 @@
 package de.raywo.tutorials.bank.ui;
 
-import de.raywo.tutorials.bank.logic.Account;
-import de.raywo.tutorials.bank.logic.Bank;
-import de.raywo.tutorials.bank.logic.Customer;
+import de.raywo.tutorials.bank.logic.*;
 
 
 /**
@@ -14,6 +12,10 @@ import de.raywo.tutorials.bank.logic.Customer;
 public class BankUI {
   private final Bank bank;
   private static int currentIban = 0;
+
+  // Konstanten für den Typ eines Kontos
+  private final int CURRENT_ACCOUNT_TYPE = 1;
+  private final int SAVINGS_ACCOUNT_TYPE = 2;
 
 
   /**
@@ -44,9 +46,12 @@ public class BankUI {
     Customer berta = createCustomer("Berta", "Beschäftigt");
     Customer clemens = createCustomer("Clemens", "Clever");
 
-    Account albertsAccount = this.createAccount(albert);
-    Account bertasAccount = this.createAccount(berta);
-    Account clemensAccount = this.createAccount(clemens);
+    Account albertsCurrentAccount = this.createAccount(albert, CURRENT_ACCOUNT_TYPE);
+    Account bertasSavingsAccount = this.createAccount(berta, SAVINGS_ACCOUNT_TYPE);
+    Account clemensAccount = this.createAccount(clemens, CURRENT_ACCOUNT_TYPE);
+
+    ((SavingsAccount) bertasSavingsAccount).setInterestRate(0.0125);
+    ((CurrentAccount) clemensAccount).setLimit(10000);
 
     this.printCustomers();
     this.printAccounts();
@@ -54,14 +59,14 @@ public class BankUI {
     System.out.println("\n\nTransaktionen");
     System.out.println("-------------");
     System.out.println("50€ auf Alberts Konto einzahlen: ");
-    albertsAccount.deposit(5000);
-    System.out.println(albertsAccount);
+    albertsCurrentAccount.deposit(5000);
+    System.out.println(albertsCurrentAccount);
     System.out.println("20€ von Alberts Konto abheben: ");
-    albertsAccount.withdraw(2000);
-    System.out.println(albertsAccount);
+    albertsCurrentAccount.withdraw(2000);
+    System.out.println(albertsCurrentAccount);
     System.out.println("50€ von Alberts Konto abheben: ");
-    albertsAccount.withdraw(5000);
-    System.out.println(albertsAccount);
+    albertsCurrentAccount.withdraw(5000);
+    System.out.println(albertsCurrentAccount);
   }
 
 
@@ -89,8 +94,33 @@ public class BankUI {
    * @param customer der Inhaber des neuen Kontos
    * @return das neu angelegte Konto
    */
-  private Account createAccount(Customer customer) {
-    Account account = new Account(this.getNextIban(), customer);
+  private Account createAccount(Customer customer, int accountType) {
+    Account account = null;
+
+    switch (accountType) {
+      case SAVINGS_ACCOUNT_TYPE:
+        account = this.createSavingsAccount(customer);
+        break;
+
+      case CURRENT_ACCOUNT_TYPE:
+        account = this.createCurrentAccount(customer);
+        break;
+    }
+
+    return account;
+  }
+
+
+  private CurrentAccount createCurrentAccount(Customer customer) {
+    CurrentAccount account = new CurrentAccount(this.getNextIban(), customer);
+    this.bank.addAccount(account);
+
+    return account;
+  }
+
+
+  private SavingsAccount createSavingsAccount(Customer customer) {
+    SavingsAccount account = new SavingsAccount(this.getNextIban(), customer);
     this.bank.addAccount(account);
 
     return account;

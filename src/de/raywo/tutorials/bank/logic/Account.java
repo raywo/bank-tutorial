@@ -17,7 +17,7 @@ import java.text.NumberFormat;
  *
  * @author Ray Wojciechowski
  */
-public class Account implements Comparable<Account> {
+public abstract class Account implements Comparable<Account> {
   private final String iban;
   private final Customer owner;
   private long balance;
@@ -49,7 +49,9 @@ public class Account implements Comparable<Account> {
    * @param amount abzuhebender Betrag in Cent
    */
   public void withdraw(final long amount) {
-    this.balance -= amount;
+    if (this.amountIsAvailable(amount)) {
+      this.balance -= amount;
+    }
   }
 
 
@@ -155,4 +157,7 @@ public class Account implements Comparable<Account> {
   public int compareTo(Account other) {
     return this.iban.compareTo(other.getIban());
   }
+
+
+  protected abstract boolean amountIsAvailable(long amount);
 }
