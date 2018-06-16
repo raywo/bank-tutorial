@@ -3,7 +3,7 @@ package de.raywo.tutorials.bank.logic;
 
 /**
  * Stellt einen Kunden unserer Bank dar.
- * <p>
+ *
  * Ein Kunde hat einen Vor- und einen Nachnamen, die beide bei der Erstellung
  * des Kunden gesetzt werden müssen. Beide sind nachträglich änderbar.
  * Außerdem gibt es eine Funktion (`getFullname`), die den Namen
@@ -30,7 +30,7 @@ public class Customer {
 
   /**
    * Gibt an, ob ein anderes Objekt gleich zu diesem ist.
-   * <p>
+   *
    * Zwei Kunden sind genau dann gleich, wenn ihr zusammengesetzter Name
    * identisch ist.
    *
@@ -52,9 +52,9 @@ public class Customer {
 
   /**
    * Liefert den zusammengesetzten Namen dieses Kunden.
-   * <p>
+   *
    * Der zusammengesetzte Namen hat folgende Form:
-   * <p>
+   *
    * Nachname, Vorname
    *
    * @return der zusammengesetzte Namen

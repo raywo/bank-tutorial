@@ -2,17 +2,17 @@ package de.raywo.tutorials.bank.logic;
 
 /**
  * Stellt ein Konto unserer Bank dar.
- * <p>
+ *
  * Ein Konto hat eine unveränderliche IBAN, die beim Erzeugen eines Kontos
  * mitgeliefert werden muss. Das Konto ist nicht für die Einmaligkeit der IBAN
  * verantwortlich.
- * <p>
+ *
  * Außerdem hat das Konto einen Inhaber, der später auch nicht mehr verändert
  * werden kann.
- * <p>
+ *
  * Der Saldo des Kontos wird als `long` gespeichert, um
  * Rundungsfehler zu vermeiden. Das heißt, der Saldo wird in Cent gespeichert.
- * <p>
+ *
  * ### Anmerkung zum Seminar:
  * * Fortgeschrittene User können hier auch `BigDecimal` als Datentyp verwenden.
  * * Dadurch, dass der Saldo und auch alle anderen Beträge als `long`
@@ -29,7 +29,7 @@ public class Account {
 
   /**
    * Erzeugt ein neues Konto.
-   * <p>
+   *
    * IBAN und Inhaber müssen mitgeliefert werden. Der Saldo wird immer auf
    * `0` gesetzt. Soll das Konto einen Anfangsbestand ungleich 0 haben, muss
    * eine Einzahlung durchgeführt werden.
@@ -47,7 +47,7 @@ public class Account {
 
   /**
    * Bucht eine Abhebung von diesem Konto.
-   * <p>
+   *
    * **Hinweis:** Der abzuhebende Betrag wird in Cent angegeben!
    *
    * @param amount abzuhebender Betrag in Cent
@@ -59,7 +59,7 @@ public class Account {
 
   /**
    * Bucht eine Einzahlung auf dieses Konto.
-   * <p>
+   *
    * **Hinweis:** Der einzuzahlende Betrag wird in Cent angegeben!
    *
    * @param amount einzuzahlender Betrag in Cent
@@ -71,15 +71,15 @@ public class Account {
 
   /**
    * Gibt an, ob ein anderes Objekt gleich zu diesem ist.
-   * <p>
+   *
    * Zwei Konten sind genau dann gleich, wenn deren IBAN identisch ist.
-   * <p>
+   *
    * **Anmerkung zum Seminar:**
-   * <p>
+   *
    * Im ersten Schritt wird geprüft, ob das `other` Objekt überhaupt ein
    * Konto ist. Ist das nicht der Fall, sind die Objekte nicht gleich und es
    * wird `false` zurückgegeben.
-   * <p>
+   *
    * Ist `other` auch ein Konto wird geprüft, ob die IBANs gleich sind. Dazu
    * wird die `equals`-Methode von `String` verwendet.
    *
@@ -129,7 +129,7 @@ public class Account {
 
   /**
    * Gibt den Saldo dieses Kontos zurück.
-   * <p>
+   *
    * **Hinweis:** Der Saldo wird in Cent angegeben!
    *
    * @return den Saldo dieses Kontos in Cent
