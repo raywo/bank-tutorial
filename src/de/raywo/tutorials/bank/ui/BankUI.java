@@ -13,10 +13,6 @@ public class BankUI {
   private final Bank bank;
   private static int currentIban = 0;
 
-  // Konstanten für den Typ eines Kontos
-  private final int CURRENT_ACCOUNT_TYPE = 1;
-  private final int SAVINGS_ACCOUNT_TYPE = 2;
-
 
   /**
    * Erzeugt ein neues Objekt dieser Klasse.
@@ -42,13 +38,18 @@ public class BankUI {
    * Verschwindet sobald eine echte UI vorliegt.
    */
   public void tryOutBank() {
+    this.printAccountTypes();
+
     Customer albert = createCustomer("Albert", "Artig");
     Customer berta = createCustomer("Berta", "Beschäftigt");
     Customer clemens = createCustomer("Clemens", "Clever");
 
-    Account albertsCurrentAccount = this.createAccount(albert, CURRENT_ACCOUNT_TYPE);
-    Account bertasSavingsAccount = this.createAccount(berta, SAVINGS_ACCOUNT_TYPE);
-    Account clemensAccount = this.createAccount(clemens, CURRENT_ACCOUNT_TYPE);
+    Account albertsCurrentAccount = this.createAccount(albert,
+        AccountType.CURRENT_ACCOUNT);
+    Account bertasSavingsAccount = this.createAccount(berta,
+        AccountType.SAVINGS_ACCOUNT);
+    Account clemensAccount = this.createAccount(clemens,
+        AccountType.CURRENT_ACCOUNT);
 
     ((SavingsAccount) bertasSavingsAccount).setInterestRate(0.0125);
     ((CurrentAccount) clemensAccount).setLimit(10000);
@@ -67,6 +68,16 @@ public class BankUI {
     System.out.println("50€ von Alberts Konto abheben: ");
     albertsCurrentAccount.withdraw(5000);
     System.out.println(albertsCurrentAccount);
+  }
+
+
+  private void printAccountTypes() {
+    System.out.println("\nVerfügbare Kontoarten:");
+    System.out.println("----------------------");
+
+    for (AccountType type : AccountType.values()) {
+      System.out.println(type.getHumanReadableName());
+    }
   }
 
 
@@ -94,15 +105,15 @@ public class BankUI {
    * @param customer der Inhaber des neuen Kontos
    * @return das neu angelegte Konto
    */
-  private Account createAccount(Customer customer, int accountType) {
+  private Account createAccount(Customer customer, AccountType accountType) {
     Account account = null;
 
     switch (accountType) {
-      case SAVINGS_ACCOUNT_TYPE:
+      case SAVINGS_ACCOUNT:
         account = this.createSavingsAccount(customer);
         break;
 
-      case CURRENT_ACCOUNT_TYPE:
+      case CURRENT_ACCOUNT:
         account = this.createCurrentAccount(customer);
         break;
     }
