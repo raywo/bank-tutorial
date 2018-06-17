@@ -47,9 +47,7 @@ public class CurrentAccount extends Account {
    * @return den Disporahmen dieses Girokontos als formatierten String
    */
   public String getFormattedLimit() {
-    NumberFormat nf = NumberFormat.getCurrencyInstance();
-
-    return nf.format(this.getLimit() / 100);
+    return this.getFormattedAmount(this.getLimit());
   }
 
 

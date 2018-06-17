@@ -47,11 +47,27 @@ public abstract class Account implements Comparable<Account> {
    * **Hinweis:** Der abzuhebende Betrag wird in Cent angegeben!
    *
    * @param amount abzuhebender Betrag in Cent
+   * @throws InvalidAmountException falls der angegebene Betrag kleiner Null
+   * ist
+   * @throws NotAvailableException falls der angegebene Betrag nicht
+   * verfügbar ist
+   * @see Account#amountIsAvailable(long)
    */
-  public void withdraw(final long amount) {
-    if (this.amountIsAvailable(amount)) {
-      this.balance -= amount;
+  public void withdraw(final long amount) throws InvalidAmountException,
+      NotAvailableException {
+
+    if (amount < 0) {
+      throw new InvalidAmountException("Der Betrag darf nicht negativ sein! "
+          + "(Betrag: " + this.getFormattedAmount(amount) + ")");
     }
+
+    if (!this.amountIsAvailable(amount)) {
+      throw new NotAvailableException("Der angeforderte Betrag ("
+          + this.getFormattedAmount(amount)
+          + ") ist nicht verfügbar.");
+    }
+
+    this.balance -= amount;
   }
 
 
@@ -61,8 +77,15 @@ public abstract class Account implements Comparable<Account> {
    * **Hinweis:** Der einzuzahlende Betrag wird in Cent angegeben!
    *
    * @param amount einzuzahlender Betrag in Cent
+   * @throws InvalidAmountException falls der angegebene Betrag kleiner Null
+   * ist
    */
-  public void deposit(final long amount) {
+  public void deposit(final long amount) throws InvalidAmountException {
+    if (amount < 0) {
+      throw new InvalidAmountException("Der Betrag darf nicht negativ sein! "
+          + "(Betrag: " + this.getFormattedAmount(amount) + ")");
+    }
+
     this.balance += amount;
   }
 
@@ -108,9 +131,7 @@ public abstract class Account implements Comparable<Account> {
    * @return den Saldo dieses Kontos als formatierten String.
    */
   public String getFormattedBalance() {
-    NumberFormat nf = NumberFormat.getCurrencyInstance();
-
-    return nf.format(this.getBalance() / 100);
+    return this.getFormattedAmount(this.getBalance());
   }
 
 
@@ -159,5 +180,25 @@ public abstract class Account implements Comparable<Account> {
   }
 
 
+  /**
+   * Liefert den angegebenen Cent-Betrag als formatierten Währungsstring zurück.
+   *
+   * @param amount der Betrag, der als Währung formatiert werden soll
+   *               (angegeben in Cent)
+   * @return den formatierten Währungsbetrag
+   */
+  protected String getFormattedAmount(long amount) {
+    NumberFormat nf = NumberFormat.getCurrencyInstance();
+
+    return nf.format(amount / 100);
+  }
+
+
+  /**
+   * Gibt an ob der angefragte Betrag verfügbar ist.
+   *
+   * @param amount der angefragte Betrag
+   * @return true gdw. der angefragte Betrag verfügbar ist; false sonst
+   */
   protected abstract boolean amountIsAvailable(long amount);
 }

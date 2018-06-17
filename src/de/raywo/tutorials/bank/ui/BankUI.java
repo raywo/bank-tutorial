@@ -59,15 +59,29 @@ public class BankUI {
 
     System.out.println("\n\nTransaktionen");
     System.out.println("-------------");
-    System.out.println("50€ auf Alberts Konto einzahlen: ");
-    albertsCurrentAccount.deposit(5000);
-    System.out.println(albertsCurrentAccount);
-    System.out.println("20€ von Alberts Konto abheben: ");
-    albertsCurrentAccount.withdraw(2000);
-    System.out.println(albertsCurrentAccount);
-    System.out.println("50€ von Alberts Konto abheben: ");
-    albertsCurrentAccount.withdraw(5000);
-    System.out.println(albertsCurrentAccount);
+
+    try {
+      System.out.println("20€ von Clemens’ Konto abheben: ");
+      clemensAccount.withdraw(2000);
+      System.out.println("\tneuer Kontostand: "
+          + clemensAccount.getFormattedBalance());
+
+      System.out.println("50€ auf Alberts Konto einzahlen: ");
+      albertsCurrentAccount.deposit(5000);
+      System.out.println("\tneuer Kontostand: "
+          + albertsCurrentAccount.getFormattedBalance());
+      System.out.println("20€ von Alberts Konto abheben: ");
+      albertsCurrentAccount.withdraw(2000);
+      System.out.println("\tneuer Kontostand: "
+          + albertsCurrentAccount.getFormattedBalance());
+      System.out.println("50€ von Alberts Konto abheben: ");
+      albertsCurrentAccount.withdraw(5000);
+      System.out.println("\tneuer Kontostand: "
+          + albertsCurrentAccount.getFormattedBalance());
+
+    } catch (InvalidAmountException | NotAvailableException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
 
